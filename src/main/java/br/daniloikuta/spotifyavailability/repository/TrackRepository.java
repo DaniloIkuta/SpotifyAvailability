@@ -9,6 +9,6 @@ import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 @Repository
 public interface TrackRepository extends
 	JpaRepository<TrackEntity, String>,
-	RevisionRepository<TrackEntity, String, Long> {
+	RevisionRepository<TrackEntity, String, Integer> {
 
 }

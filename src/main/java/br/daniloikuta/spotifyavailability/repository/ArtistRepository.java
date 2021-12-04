@@ -9,6 +9,6 @@ import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
 @Repository
 public interface ArtistRepository extends
 	JpaRepository<ArtistEntity, String>,
-	RevisionRepository<ArtistEntity, String, Long> {
+	RevisionRepository<ArtistEntity, String, Integer> {
 
 }

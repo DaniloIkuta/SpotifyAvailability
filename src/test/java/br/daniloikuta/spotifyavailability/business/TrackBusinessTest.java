@@ -1,25 +1,38 @@
 package br.daniloikuta.spotifyavailability.business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityNotFoundException;
+
+import org.hibernate.envers.DefaultRevisionEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.envers.repository.support.DefaultRevisionMetadata;
+import org.springframework.data.history.Revision;
+import org.springframework.data.history.RevisionMetadata.RevisionType;
+import org.springframework.data.history.Revisions;
 
 import com.neovisionaries.i18n.CountryCode;
 
 import br.daniloikuta.spotifyavailability.dto.AlbumDto;
 import br.daniloikuta.spotifyavailability.dto.ArtistDto;
+import br.daniloikuta.spotifyavailability.dto.RevisionDto;
+import br.daniloikuta.spotifyavailability.dto.RevisionMetadataDto;
 import br.daniloikuta.spotifyavailability.dto.TrackDto;
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
 import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
@@ -167,5 +180,69 @@ public class TrackBusinessTest {
 
 	private ArtistDto getArtist1Dto () {
 		return ArtistDto.builder().name("artist1").id("artistId1").build();
+	}
+
+	@Test
+	void testGetRevisionHistoryNotFound () {
+		when(trackRepository.findRevisions("id")).thenReturn(Revisions.none());
+		assertThrows(EntityNotFoundException.class, () -> trackBusiness.getRevisionHistory("id"));
+	}
+
+	@Test
+	void testGetRevisionHistory () {
+		setupTestGetRevisionHistory();
+
+		final List<RevisionDto<TrackDto>> revisionHistory = trackBusiness.getRevisionHistory("id");
+
+		final RevisionDto<TrackDto> revision1 = RevisionDto.<TrackDto>builder()
+			.entry(TrackDto.builder().id("id").build())
+			.metadata(RevisionMetadataDto.builder()
+				.id(1)
+				.timestamp(LocalDateTime.ofInstant(Instant.ofEpochMilli(1638652499L), ZoneId.systemDefault()))
+				.type("INSERT")
+				.build())
+			.build();
+		final RevisionDto<TrackDto> revision2 = RevisionDto.<TrackDto>builder()
+			.entry(TrackDto.builder().id("id").name("track").build())
+			.metadata(RevisionMetadataDto.builder()
+				.id(2)
+				.timestamp(LocalDateTime.ofInstant(Instant.ofEpochMilli(1638652500L), ZoneId.systemDefault()))
+				.type("UPDATE")
+				.build())
+			.build();
+		final RevisionDto<TrackDto> revision3 = RevisionDto.<TrackDto>builder()
+			.metadata(RevisionMetadataDto.builder()
+				.id(3)
+				.timestamp(LocalDateTime.ofInstant(Instant.ofEpochMilli(1638652501L), ZoneId.systemDefault()))
+				.type("DELETE")
+				.build())
+			.build();
+		final List<RevisionDto<TrackDto>> expected = Arrays.asList(revision1, revision2, revision3);
+
+		assertEquals(expected, revisionHistory);
+	}
+
+	private void setupTestGetRevisionHistory () {
+		final DefaultRevisionEntity revisionEntity1 = new DefaultRevisionEntity();
+		revisionEntity1.setId(1);
+		revisionEntity1.setTimestamp(1638652499L);
+
+		final DefaultRevisionEntity revisionEntity2 = new DefaultRevisionEntity();
+		revisionEntity2.setId(2);
+		revisionEntity2.setTimestamp(1638652500L);
+
+		final DefaultRevisionEntity revisionEntity3 = new DefaultRevisionEntity();
+		revisionEntity3.setId(3);
+		revisionEntity3.setTimestamp(1638652501L);
+
+		final List<Revision<Integer, TrackEntity>> revisions = Arrays.asList(
+			Revision.of(new DefaultRevisionMetadata(revisionEntity1, RevisionType.INSERT),
+				TrackEntity.builder().id("id").build()),
+			Revision.of(new DefaultRevisionMetadata(revisionEntity2, RevisionType.UPDATE),
+				TrackEntity.builder().id("id").name("track").build()),
+			Revision.of(new DefaultRevisionMetadata(revisionEntity3, RevisionType.DELETE),
+				null));
+
+		when(trackRepository.findRevisions("id")).thenReturn(Revisions.of(revisions));
 	}
 }

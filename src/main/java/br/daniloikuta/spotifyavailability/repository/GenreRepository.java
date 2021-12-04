@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import br.daniloikuta.spotifyavailability.entity.GenreEntity;
 
 @Repository
-public interface GenreRepository extends JpaRepository<GenreEntity, Long>, RevisionRepository<GenreEntity, Long, Long> {
+public interface GenreRepository extends
+	JpaRepository<GenreEntity, Long>,
+	RevisionRepository<GenreEntity, Long, Integer> {
 
 }

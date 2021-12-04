@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.daniloikuta.spotifyavailability.business.TrackBusiness;
+import br.daniloikuta.spotifyavailability.dto.RevisionDto;
 import br.daniloikuta.spotifyavailability.dto.TrackDto;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,5 +30,14 @@ public class TrackController {
 		log.debug(tracks.toString());
 
 		return ResponseEntity.ok(tracks);
+	}
+
+	@GetMapping("/revisionHistory")
+	public ResponseEntity<List<RevisionDto<TrackDto>>> getRevisionHistory (@RequestParam(name = "id") final String id) {
+		final List<RevisionDto<TrackDto>> revisionHistory = trackBusiness.getRevisionHistory(id);
+
+		log.debug(revisionHistory.toString());
+
+		return ResponseEntity.ok(revisionHistory);
 	}
 }

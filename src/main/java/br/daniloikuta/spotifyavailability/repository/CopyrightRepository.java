@@ -9,6 +9,6 @@ import br.daniloikuta.spotifyavailability.entity.CopyrightEntity;
 @Repository
 public interface CopyrightRepository extends
 	JpaRepository<CopyrightEntity, Long>,
-	RevisionRepository<CopyrightEntity, Long, Long> {
+	RevisionRepository<CopyrightEntity, Long, Integer> {
 
 }

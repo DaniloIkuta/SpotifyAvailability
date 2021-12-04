@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.daniloikuta.spotifyavailability.business.AlbumBusiness;
 import br.daniloikuta.spotifyavailability.dto.AlbumDto;
+import br.daniloikuta.spotifyavailability.dto.RevisionDto;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -29,5 +30,14 @@ public class AlbumController {
 		log.debug(albums.toString());
 
 		return ResponseEntity.ok(albums);
+	}
+
+	@GetMapping("/revisionHistory")
+	public ResponseEntity<List<RevisionDto<AlbumDto>>> getRevisionHistory (@RequestParam(name = "id") final String id) {
+		final List<RevisionDto<AlbumDto>> revisionHistory = albumBusiness.getRevisionHistory(id);
+
+		log.debug(revisionHistory.toString());
+
+		return ResponseEntity.ok(revisionHistory);
 	}
 }

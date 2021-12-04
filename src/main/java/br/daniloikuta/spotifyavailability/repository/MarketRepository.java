@@ -11,6 +11,6 @@ import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 @Repository
 public interface MarketRepository extends
 	JpaRepository<MarketEntity, CountryCode>,
-	RevisionRepository<MarketEntity, CountryCode, Long> {
+	RevisionRepository<MarketEntity, CountryCode, Integer> {
 
 }

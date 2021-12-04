@@ -27,6 +27,8 @@ public class AlbumAvailabilityController {
 		getAvailabilities (@RequestParam(name = "ids") final List<String> ids) {
 		final AlbumAvailabilityResponseDto albumAvailabilities = albumAvailabilityBusiness.getAlbumAvailabilities(ids);
 
+		log.debug(albumAvailabilities.toString());
+
 		return ResponseEntity.ok(albumAvailabilities);
 	}
 }

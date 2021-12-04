@@ -50,7 +50,6 @@ public class AlbumAvailabilityBusiness {
 
 		albums.forEach(album -> album.setTracks(null));
 		final List<AlbumEntity> savedAlbums = albumRepository.saveAll(albums);
-		log.debug(savedAlbums.toString());
 
 		trackRepository.saveAll(tracks);
 

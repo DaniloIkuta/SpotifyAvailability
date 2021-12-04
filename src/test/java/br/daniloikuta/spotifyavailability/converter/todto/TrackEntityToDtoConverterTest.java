@@ -36,7 +36,12 @@ public class TrackEntityToDtoConverterTest {
 	@Test
 	void testConvert () {
 		final TrackDto trackDto = TrackEntityToDtoConverter.convert(TrackEntity.builder()
-			.album(AlbumEntity.builder().name("albumName").build())
+			.album(AlbumEntity.builder()
+				.name("albumName")
+				.tracks(new HashSet<>(Arrays.asList(
+					TrackEntity.builder().name("").build(),
+					TrackEntity.builder().name("").build())))
+				.build())
 			.artists(new HashSet<>(Arrays.asList(ArtistEntity.builder().name("artist1").build(),
 				ArtistEntity.builder().name("artist2").build())))
 			.availableMarkets(new HashSet<>(Arrays.asList(MarketEntity.builder().code(CountryCode.BR).build(),
@@ -52,6 +57,38 @@ public class TrackEntityToDtoConverterTest {
 
 		final TrackDto expected = TrackDto.builder()
 			.album(AlbumDto.builder().name("albumName").build())
+			.artists(new HashSet<>(Arrays.asList(ArtistDto.builder().name("artist1").build(),
+				ArtistDto.builder().name("artist2").build())))
+			.availableMarkets(new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US)))
+			.discNumber(1)
+			.duration(1000)
+			.explicit(false)
+			.id("trackId")
+			.name("trackName")
+			.restriction("restriction")
+			.trackNumber(2)
+			.build();
+		assertEquals(expected, trackDto);
+	}
+
+	@Test
+	void testConvertWithoutAlbum () {
+		final TrackDto trackDto = TrackEntityToDtoConverter.convertWithoutAlbum(TrackEntity.builder()
+			.album(AlbumEntity.builder().name("albumName").build())
+			.artists(new HashSet<>(Arrays.asList(ArtistEntity.builder().name("artist1").build(),
+				ArtistEntity.builder().name("artist2").build())))
+			.availableMarkets(new HashSet<>(Arrays.asList(MarketEntity.builder().code(CountryCode.BR).build(),
+				MarketEntity.builder().code(CountryCode.US).build())))
+			.discNumber(1)
+			.duration(1000)
+			.explicit(false)
+			.id("trackId")
+			.name("trackName")
+			.restriction("restriction")
+			.trackNumber(2)
+			.build());
+
+		final TrackDto expected = TrackDto.builder()
 			.artists(new HashSet<>(Arrays.asList(ArtistDto.builder().name("artist1").build(),
 				ArtistDto.builder().name("artist2").build())))
 			.availableMarkets(new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US)))

@@ -9,7 +9,6 @@ import com.neovisionaries.i18n.CountryCode;
 
 import br.daniloikuta.spotifyavailability.dto.AlbumDto;
 import br.daniloikuta.spotifyavailability.dto.ArtistDto;
-import br.daniloikuta.spotifyavailability.dto.TrackDto;
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
 import br.daniloikuta.spotifyavailability.entity.CopyrightEntity;
 import br.daniloikuta.spotifyavailability.entity.GenreEntity;
@@ -17,6 +16,20 @@ import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 
 public class AlbumEntityToDtoConverter {
 	public static AlbumDto convert (final AlbumEntity albumEntity) {
+		final AlbumDto albumDto = convertWithoutTracks(albumEntity);
+
+		if (albumDto != null && !CollectionUtils.isEmpty(albumEntity.getTracks())) {
+			albumDto.setTracks(
+				albumEntity.getTracks()
+					.stream()
+					.map(TrackEntityToDtoConverter::convertWithoutAlbum)
+					.collect(Collectors.toSet()));
+		}
+
+		return albumDto;
+	}
+
+	public static AlbumDto convertWithoutTracks (final AlbumEntity albumEntity) {
 		if (albumEntity == null) {
 			return null;
 		}
@@ -32,8 +45,6 @@ public class AlbumEntityToDtoConverter {
 			: albumEntity.getCopyrights().stream().map(CopyrightEntity::getText).collect(Collectors.toSet());
 		final Set<String> genres = CollectionUtils.isEmpty(albumEntity.getGenres()) ? null
 			: albumEntity.getGenres().stream().map(GenreEntity::getGenre).collect(Collectors.toSet());
-		final Set<TrackDto> tracks = CollectionUtils.isEmpty(albumEntity.getTracks()) ? null
-			: albumEntity.getTracks().stream().map(TrackEntityToDtoConverter::convert).collect(Collectors.toSet());
 
 		return AlbumDto.builder()
 			.artists(artists)
@@ -46,7 +57,6 @@ public class AlbumEntityToDtoConverter {
 			.releaseDatePrecision(albumEntity.getReleaseDatePrecision())
 			.restriction(albumEntity.getRestriction())
 			.trackCount(albumEntity.getTrackCount())
-			.tracks(tracks)
 			.type(albumEntity.getType())
 			.build();
 	}

@@ -23,7 +23,9 @@ import br.daniloikuta.spotifyavailability.enums.ReleaseDatePrecision;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "Album")
@@ -54,6 +56,7 @@ public class AlbumEntity {
 	@Column
 	private ReleaseDatePrecision releaseDatePrecision;
 
+	// TODO: verify entity duplication
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "albumId")
 	@AuditJoinTable(name = "album_copyright_audit")
@@ -77,6 +80,8 @@ public class AlbumEntity {
 	@ManyToMany(mappedBy = "albums", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<ArtistEntity> artists;
 
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	@OneToMany(mappedBy = "album")
 	private Set<TrackEntity> tracks;
 }

@@ -27,6 +27,8 @@ public class TrackAvailabilityController {
 		getAvailabilities (@RequestParam(name = "ids") final List<String> ids) {
 		final TrackAvailabilityResponseDto trackAvailabilities = trackAvailabilityBusiness.getTrackAvailabilities(ids);
 
+		log.debug(trackAvailabilities.toString());
+
 		return ResponseEntity.ok(trackAvailabilities);
 	}
 

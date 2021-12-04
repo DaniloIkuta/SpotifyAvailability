@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 
 @Repository
-public interface TrackRepository extends JpaRepository<TrackEntity, Long>, RevisionRepository<TrackEntity, Long, Long> {
+public interface TrackRepository extends
+	JpaRepository<TrackEntity, String>,
+	RevisionRepository<TrackEntity, String, Long> {
 
 }

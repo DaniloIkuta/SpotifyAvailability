@@ -48,7 +48,6 @@ public class TrackAvailabilityBusiness {
 		albumRepository.saveAll(albums);
 
 		final List<TrackEntity> savedTracks = trackRepository.saveAll(tracks);
-		log.debug(savedTracks.toString());
 
 		// TODO: get alternatives?
 

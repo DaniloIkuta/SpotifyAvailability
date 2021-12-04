@@ -26,6 +26,8 @@ public class ArtistAlbumsAvailabilityController {
 		final ArtistAlbumsAvailabilityResponseDto artistAlbumsAvailabilities =
 			albumsAvailabilityBusiness.getArtistAlbumsAvailabilities(id);
 
+		log.debug(artistAlbumsAvailabilities.toString());
+
 		return ResponseEntity.ok(artistAlbumsAvailabilities);
 	}
 }

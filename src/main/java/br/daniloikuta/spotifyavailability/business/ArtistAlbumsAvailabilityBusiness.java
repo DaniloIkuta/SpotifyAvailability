@@ -44,7 +44,6 @@ public class ArtistAlbumsAvailabilityBusiness {
 			savedArtists.stream().filter(artist -> artist.getId().equals(id)).findAny().orElse(null);
 
 		final List<AlbumEntity> savedAlbums = albumRepository.saveAll(artistAlbums);
-		log.debug(savedAlbums.toString());
 
 		return ArtistAlbumsAvailabilityResponseDto.builder()
 			.artist(ArtistEntityToDtoConverter.convert(searchedArtist))

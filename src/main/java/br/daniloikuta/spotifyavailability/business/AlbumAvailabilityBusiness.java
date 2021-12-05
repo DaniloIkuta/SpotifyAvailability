@@ -67,4 +67,12 @@ public class AlbumAvailabilityBusiness {
 		tracks.forEach(track -> track.setAlbum(albumWithoutTracks));
 		return tracks;
 	}
+
+	public void fetchMissingTracks () {
+		final List<String> ids = albumRepository.findAlbumIdsWithoutTracks();
+
+		if (!ids.isEmpty()) {
+			getAlbumAvailabilities(ids);
+		}
+	}
 }

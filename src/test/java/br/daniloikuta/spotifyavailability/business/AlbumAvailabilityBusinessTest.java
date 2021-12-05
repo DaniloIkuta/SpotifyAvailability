@@ -1,6 +1,8 @@
 package br.daniloikuta.spotifyavailability.business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.neovisionaries.i18n.CountryCode;
@@ -38,6 +41,7 @@ import br.daniloikuta.spotifyavailability.service.SpotifyService;
 @ExtendWith(MockitoExtension.class)
 public class AlbumAvailabilityBusinessTest {
 	@InjectMocks
+	@Spy
 	private AlbumAvailabilityBusiness albumAvailabilityBusiness;
 
 	@Mock
@@ -165,5 +169,24 @@ public class AlbumAvailabilityBusinessTest {
 		return new HashSet<>(Arrays.asList(album1Track1Builder.album(albumWithoutTracks.get(0)).build(),
 			album2Track1Builder.album(albumWithoutTracks.get(1)).build(),
 			album2Track2Builder.album(albumWithoutTracks.get(1)).build()));
+	}
+
+	@Test
+	void testFetchMissingTracksNoneFound () {
+		when(albumRepository.findAlbumIdsWithoutTracks()).thenReturn(new ArrayList<>());
+
+		albumAvailabilityBusiness.fetchMissingTracks();
+
+		verify(albumAvailabilityBusiness, never()).getAlbumAvailabilities(anyList());
+	}
+
+	@Test
+	void testFetchMissingTracks () {
+		final List<String> ids = Arrays.asList("albumId1", "albumId2");
+		when(albumRepository.findAlbumIdsWithoutTracks()).thenReturn(ids);
+
+		albumAvailabilityBusiness.fetchMissingTracks();
+
+		verify(albumAvailabilityBusiness).getAlbumAvailabilities(ids);
 	}
 }

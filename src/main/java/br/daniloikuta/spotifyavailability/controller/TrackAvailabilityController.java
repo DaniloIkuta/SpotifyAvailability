@@ -31,5 +31,4 @@ public class TrackAvailabilityController {
 
 		return ResponseEntity.ok(trackAvailabilities);
 	}
-
 }

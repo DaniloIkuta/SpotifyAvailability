@@ -2,10 +2,10 @@ package br.daniloikuta.spotifyavailability.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -36,13 +36,11 @@ public class ArtistEntity {
 
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany
-	@JoinTable(name = "ArtistAlbum")
+	@ManyToMany(mappedBy = "artists", cascade = CascadeType.ALL)
 	private Set<AlbumEntity> albums;
 
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany
-	@JoinTable(name = "ArtistTrack")
+	@ManyToMany(mappedBy = "artists", cascade = CascadeType.ALL)
 	private Set<TrackEntity> tracks;
 }

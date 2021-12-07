@@ -36,7 +36,10 @@ public class TrackEntity {
 	@Column(nullable = false)
 	private String name;
 
-	@ManyToMany(mappedBy = "tracks", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "ArtistTrack",
+		joinColumns = @JoinColumn(name = "trackId"),
+		inverseJoinColumns = @JoinColumn(name = "artistId"))
 	private Set<ArtistEntity> artists;
 
 	@ManyToOne(fetch = FetchType.EAGER)

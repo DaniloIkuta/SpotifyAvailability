@@ -29,7 +29,6 @@ import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 import br.daniloikuta.spotifyavailability.enums.AlbumType;
 import br.daniloikuta.spotifyavailability.repository.AlbumRepository;
-import br.daniloikuta.spotifyavailability.repository.ArtistRepository;
 import br.daniloikuta.spotifyavailability.service.SpotifyService;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,9 +43,6 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 	private AlbumRepository albumRepository;
 
 	@Mock
-	private ArtistRepository artistRepository;
-
-	@Mock
 	private Clock clock;
 	private final static LocalDate FIXED_DATE = LocalDate.of(2021, 12, 6);
 
@@ -58,7 +54,7 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 			artistAlbumsAvailabilityBusiness.getArtistAlbumsAvailabilities("artistId");
 
 		assertEquals(ArtistAlbumsAvailabilityResponseDto.builder().build(), artistAlbumsAvailabilities);
-		verifyNoInteractions(albumRepository, artistRepository, clock);
+		verifyNoInteractions(albumRepository, clock);
 	}
 
 	@Test
@@ -129,7 +125,6 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 
 		final List<AlbumEntity> artistAlbumEntities = Arrays.asList(albumEntity1, albumEntity2);
 		when(spotifyService.getArtistAlbums("artistId")).thenReturn(artistAlbumEntities);
-		when(artistRepository.saveAll(allArtistEntities)).thenReturn(allArtistEntities);
 		when(albumRepository.saveAll(artistAlbumEntities)).thenReturn(artistAlbumEntities);
 
 		final Clock fixedClock = Clock.fixed(FIXED_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(),

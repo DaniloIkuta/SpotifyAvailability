@@ -14,7 +14,6 @@ import br.daniloikuta.spotifyavailability.dto.ArtistAlbumsAvailabilityResponseDt
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
 import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
 import br.daniloikuta.spotifyavailability.repository.AlbumRepository;
-import br.daniloikuta.spotifyavailability.repository.ArtistRepository;
 import br.daniloikuta.spotifyavailability.service.SpotifyService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,9 +25,6 @@ public class ArtistAlbumsAvailabilityBusiness {
 
 	@Autowired
 	private AlbumRepository albumRepository;
-
-	@Autowired
-	private ArtistRepository artistRepository;
 
 	@Autowired
 	private Clock clock;
@@ -44,9 +40,8 @@ public class ArtistAlbumsAvailabilityBusiness {
 		final List<ArtistEntity> artists =
 			artistAlbums.stream().map(AlbumEntity::getArtists).flatMap(Set::stream).distinct().toList();
 
-		final List<ArtistEntity> savedArtists = artistRepository.saveAll(artists);
 		final ArtistEntity searchedArtist =
-			savedArtists.stream().filter(artist -> artist.getId().equals(id)).findAny().orElse(null);
+			artists.stream().filter(artist -> artist.getId().equals(id)).findAny().orElse(null);
 
 		final LocalDate now = LocalDate.now(clock);
 		artistAlbums.forEach(album -> album.setLastUpdated(now));

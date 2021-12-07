@@ -13,10 +13,8 @@ import org.springframework.stereotype.Component;
 import br.daniloikuta.spotifyavailability.converter.todto.AlbumEntityToDtoConverter;
 import br.daniloikuta.spotifyavailability.dto.AlbumAvailabilityResponseDto;
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
-import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
 import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 import br.daniloikuta.spotifyavailability.repository.AlbumRepository;
-import br.daniloikuta.spotifyavailability.repository.ArtistRepository;
 import br.daniloikuta.spotifyavailability.repository.TrackRepository;
 import br.daniloikuta.spotifyavailability.service.SpotifyService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +30,6 @@ public class AlbumAvailabilityBusiness {
 
 	@Autowired
 	private TrackRepository trackRepository;
-
-	@Autowired
-	private ArtistRepository artistRepository;
 
 	@Value("${spotify.availability-refresh-interval-days}")
 	private Integer refreshIntervalDays;
@@ -52,10 +47,6 @@ public class AlbumAvailabilityBusiness {
 
 		final Set<TrackEntity> tracks =
 			albums.stream().map(this::setAlbumToTracks).flatMap(Set::stream).collect(Collectors.toSet());
-		final List<ArtistEntity> artists =
-			tracks.stream().map(TrackEntity::getArtists).flatMap(Set::stream).distinct().toList();
-
-		artistRepository.saveAll(artists);
 
 		final LocalDate now = LocalDate.now(clock);
 		albums.forEach(album -> {

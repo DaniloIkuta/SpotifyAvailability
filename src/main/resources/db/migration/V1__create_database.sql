@@ -28,15 +28,15 @@ CREATE TABLE artist (
 )  ENGINE=INNODB;
 
 CREATE TABLE artist_album (
-    artists_id VARCHAR(64) NOT NULL,
-    albums_id VARCHAR(64) NOT NULL,
-    PRIMARY KEY (artists_id , albums_id)
+    artist_id VARCHAR(64) NOT NULL,
+    album_id VARCHAR(64) NOT NULL,
+    PRIMARY KEY (artist_id , album_id)
 )  ENGINE=INNODB;
 
 CREATE TABLE artist_track (
-    artists_id VARCHAR(64) NOT NULL,
-    tracks_id VARCHAR(64) NOT NULL,
-    PRIMARY KEY (artists_id , tracks_id)
+    artist_id VARCHAR(64) NOT NULL,
+    track_id VARCHAR(64) NOT NULL,
+    PRIMARY KEY (artist_id , track_id)
 )  ENGINE=INNODB;
 
 CREATE TABLE genre (
@@ -69,10 +69,10 @@ ALTER TABLE album_availability ADD CONSTRAINT fk_album_availability_market_code 
 ALTER TABLE album_availability ADD CONSTRAINT fk_album_availability_album_id FOREIGN KEY (album_id) REFERENCES album (id);
 ALTER TABLE album_genre ADD CONSTRAINT fk_album_genre_genre_id FOREIGN KEY (genre_id) REFERENCES genre (id);
 ALTER TABLE album_genre ADD CONSTRAINT fk_album_genre_album_id FOREIGN KEY (album_id) REFERENCES album (id);
-ALTER TABLE artist_album ADD CONSTRAINT fk_artist_album_albums_id FOREIGN KEY (albums_id) REFERENCES album (id);
-ALTER TABLE artist_album ADD CONSTRAINT fk_artist_album_artists_id FOREIGN KEY (artists_id) REFERENCES artist (id);
-ALTER TABLE artist_track ADD CONSTRAINT fk_artist_track_tracks_id FOREIGN KEY (tracks_id) REFERENCES track (id);
-ALTER TABLE artist_track ADD CONSTRAINT fk_artist_track_artists_id FOREIGN KEY (artists_id) REFERENCES artist (id);
+ALTER TABLE artist_album ADD CONSTRAINT fk_artist_album_albums_id FOREIGN KEY (album_id) REFERENCES album (id);
+ALTER TABLE artist_album ADD CONSTRAINT fk_artist_album_artists_id FOREIGN KEY (artist_id) REFERENCES artist (id);
+ALTER TABLE artist_track ADD CONSTRAINT fk_artist_track_tracks_id FOREIGN KEY (track_id) REFERENCES track (id);
+ALTER TABLE artist_track ADD CONSTRAINT fk_artist_track_artists_id FOREIGN KEY (artist_id) REFERENCES artist (id);
 ALTER TABLE track ADD CONSTRAINT fk_track_album_id FOREIGN KEY (album_id) REFERENCES album (id);
 ALTER TABLE track_availability ADD CONSTRAINT fk_track_availability_market_code FOREIGN KEY (market_code) REFERENCES market (code);
 ALTER TABLE track_availability ADD CONSTRAINT fk_track_availability_track_id FOREIGN KEY (track_id) REFERENCES track (id);
@@ -131,21 +131,21 @@ CREATE TABLE artist_audit (
 )  ENGINE=INNODB;
 
 CREATE TABLE artist_album_audit (
-    artists_id VARCHAR(64) NOT NULL,
-    albums_id VARCHAR(64) NOT NULL,
+    artist_id VARCHAR(64) NOT NULL,
+    album_id VARCHAR(64) NOT NULL,
     revision_id BIGINT NOT NULL,
     revision_type TINYINT NOT NULL,
-    PRIMARY KEY (revision_id , artists_id , albums_id),
+    PRIMARY KEY (revision_id , artist_id , album_id),
     CONSTRAINT fk_artist_album_revinfo_rev_id FOREIGN KEY (revision_id)
         REFERENCES revision_info (revision_id)
 )  ENGINE=INNODB;
 
 CREATE TABLE artist_track_audit (
-    artists_id VARCHAR(64) NOT NULL,
-    tracks_id VARCHAR(64) NOT NULL,
+    artist_id VARCHAR(64) NOT NULL,
+    track_id VARCHAR(64) NOT NULL,
     revision_id BIGINT NOT NULL,
     revision_type TINYINT NOT NULL,
-    PRIMARY KEY (revision_id , artists_id , tracks_id),
+    PRIMARY KEY (revision_id , artist_id , track_id),
     CONSTRAINT fk_artist_track_revinfo_rev_id FOREIGN KEY (revision_id)
         REFERENCES revision_info (revision_id)
 )  ENGINE=INNODB;

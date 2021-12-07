@@ -74,7 +74,10 @@ public class AlbumEntity {
 		inverseJoinColumns = @JoinColumn(name = "genreId"))
 	private Set<GenreEntity> genres;
 
-	@ManyToMany(mappedBy = "albums", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "ArtistAlbum",
+		joinColumns = @JoinColumn(name = "albumId"),
+		inverseJoinColumns = @JoinColumn(name = "artistId"))
 	private Set<ArtistEntity> artists;
 
 	@EqualsAndHashCode.Exclude

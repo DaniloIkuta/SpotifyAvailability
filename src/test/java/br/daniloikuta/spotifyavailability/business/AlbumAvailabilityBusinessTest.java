@@ -37,7 +37,6 @@ import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 import br.daniloikuta.spotifyavailability.enums.AlbumType;
 import br.daniloikuta.spotifyavailability.enums.ReleaseDatePrecision;
 import br.daniloikuta.spotifyavailability.repository.AlbumRepository;
-import br.daniloikuta.spotifyavailability.repository.ArtistRepository;
 import br.daniloikuta.spotifyavailability.repository.TrackRepository;
 import br.daniloikuta.spotifyavailability.service.SpotifyService;
 
@@ -57,9 +56,6 @@ public class AlbumAvailabilityBusinessTest {
 	private TrackRepository trackRepository;
 
 	@Mock
-	private ArtistRepository artistRepository;
-
-	@Mock
 	private Clock clock;
 	private final static LocalDate FIXED_DATE = LocalDate.of(2021, 12, 6);
 
@@ -72,7 +68,7 @@ public class AlbumAvailabilityBusinessTest {
 			albumAvailabilityBusiness.getAlbumAvailabilities(albumIds);
 
 		assertEquals(AlbumAvailabilityResponseDto.builder().build(), albumAvailabilities);
-		verifyNoInteractions(albumRepository, trackRepository, artistRepository, clock);
+		verifyNoInteractions(albumRepository, trackRepository, clock);
 	}
 
 	@Test
@@ -83,8 +79,6 @@ public class AlbumAvailabilityBusinessTest {
 		final AlbumAvailabilityResponseDto albumAvailabilities =
 			albumAvailabilityBusiness.getAlbumAvailabilities(albumIds);
 
-		verify(artistRepository)
-			.saveAll(Arrays.asList(ArtistEntity.builder().id("artistId").name("artistName").build()));
 		verify(trackRepository).saveAll(allTracksWithAlbum);
 
 		final ArtistDto artist = ArtistDto.builder().id("artistId").name("artistName").build();
@@ -191,7 +185,7 @@ public class AlbumAvailabilityBusinessTest {
 		albumAvailabilityBusiness.fetchMissingTracks();
 
 		verify(albumAvailabilityBusiness, never()).getAlbumAvailabilities(anyList());
-		verifyNoInteractions(trackRepository, artistRepository, clock);
+		verifyNoInteractions(trackRepository, clock);
 	}
 
 	@Test
@@ -202,7 +196,7 @@ public class AlbumAvailabilityBusinessTest {
 		albumAvailabilityBusiness.fetchMissingTracks();
 
 		verify(albumAvailabilityBusiness).getAlbumAvailabilities(ids);
-		verifyNoInteractions(trackRepository, artistRepository, clock);
+		verifyNoInteractions(trackRepository, clock);
 	}
 
 	@Test
@@ -213,7 +207,7 @@ public class AlbumAvailabilityBusinessTest {
 		albumAvailabilityBusiness.refreshAvailabilities();
 
 		verify(albumAvailabilityBusiness, never()).getAlbumAvailabilities(anyList());
-		verifyNoInteractions(trackRepository, artistRepository, clock);
+		verifyNoInteractions(trackRepository, clock);
 	}
 
 	@Test
@@ -225,6 +219,6 @@ public class AlbumAvailabilityBusinessTest {
 		albumAvailabilityBusiness.refreshAvailabilities();
 
 		verify(albumAvailabilityBusiness).getAlbumAvailabilities(ids);
-		verifyNoInteractions(trackRepository, artistRepository, clock);
+		verifyNoInteractions(trackRepository, clock);
 	}
 }

@@ -1,12 +1,12 @@
 package br.daniloikuta.spotifyavailability.converter.toentity;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
 import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
-import br.daniloikuta.spotifyavailability.entity.CopyrightEntity;
 import br.daniloikuta.spotifyavailability.entity.GenreEntity;
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 import br.daniloikuta.spotifyavailability.entity.TrackEntity;
@@ -31,11 +31,12 @@ public class AlbumToAlbumEntityConverter {
 				.map(CountryCodeToMarketEntityConverter::convert)
 				.collect(Collectors.toSet());
 
-		final Set<CopyrightEntity> copyrightEntities = album.getCopyrights() == null ? null
+		final String copyrights = album.getCopyrights() == null ? null
 			: Arrays.asList(album.getCopyrights())
 				.stream()
-				.map(CopyrightToCopyrightEntityConverter::convert)
-				.collect(Collectors.toSet());
+				.map(copyright -> copyright == null ? null : copyright.getText())
+				.filter(Objects::nonNull)
+				.collect(Collectors.joining(", "));
 
 		final Paging<TrackSimplified> tracksPaging = album.getTracks();
 		final Set<TrackEntity> trackEntities = tracksPaging == null || tracksPaging.getItems() == null ? null
@@ -66,7 +67,7 @@ public class AlbumToAlbumEntityConverter {
 			.name(album.getName())
 			.type(albumType)
 			.availableMarkets(marketEntities)
-			.copyrights(copyrightEntities)
+			.copyrights(copyrights)
 			.trackCount(total)
 			.releaseDate(releaseDate)
 			.releaseDatePrecision(releaseDatePrecision)

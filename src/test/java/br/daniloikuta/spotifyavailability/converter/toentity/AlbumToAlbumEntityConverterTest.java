@@ -13,7 +13,6 @@ import com.neovisionaries.i18n.CountryCode;
 
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
 import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
-import br.daniloikuta.spotifyavailability.entity.CopyrightEntity;
 import br.daniloikuta.spotifyavailability.entity.GenreEntity;
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 import br.daniloikuta.spotifyavailability.entity.TrackEntity;
@@ -50,7 +49,9 @@ public class AlbumToAlbumEntityConverterTest {
 			.setAvailableMarkets(CountryCode.BR, CountryCode.US)
 			.setId("albumSpotifyId")
 			.setName("albumName")
-			.setCopyrights(new Copyright.Builder().setText("copyrightText").build())
+			.setCopyrights(new Copyright.Builder().setText("copyrightText1").build(),
+				null,
+				new Copyright.Builder().setText("copyrightText2").build())
 			.setReleaseDate("2021-01-01")
 			.setReleaseDatePrecision(ReleaseDatePrecision.YEAR)
 			.setGenres("genre1", "genre2")
@@ -64,8 +65,6 @@ public class AlbumToAlbumEntityConverterTest {
 			MarketEntity.builder().code(CountryCode.US).build()));
 		final Set<ArtistEntity> artists =
 			new HashSet<>(Arrays.asList(ArtistEntity.builder().id("artistSpotifyId").name("artistName").build()));
-		final Set<CopyrightEntity> copyrights =
-			new HashSet<>(Arrays.asList(CopyrightEntity.builder().text("copyrightText").build()));
 		final Set<GenreEntity> genres = new HashSet<>(Arrays.asList(GenreEntity.builder().genre("genre1").build(),
 			GenreEntity.builder().genre("genre2").build()));
 		final Set<TrackEntity> tracks =
@@ -82,7 +81,7 @@ public class AlbumToAlbumEntityConverterTest {
 			.type(br.daniloikuta.spotifyavailability.enums.AlbumType.ALBUM)
 			.availableMarkets(availableMarkets)
 			.artists(artists)
-			.copyrights(copyrights)
+			.copyrights("copyrightText1, copyrightText2")
 			.releaseDate("2021-01-01")
 			.releaseDatePrecision(br.daniloikuta.spotifyavailability.enums.ReleaseDatePrecision.YEAR)
 			.genres(genres)

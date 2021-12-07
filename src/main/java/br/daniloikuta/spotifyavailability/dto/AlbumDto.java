@@ -28,7 +28,7 @@ public class AlbumDto {
 	private Integer trackCount;
 	private String releaseDate;
 	private ReleaseDatePrecision releaseDatePrecision;
-	private Set<String> copyrights;
+	private String copyrights;
 	private Set<CountryCode> availableMarkets;
 	private String restriction;
 	private Set<String> genres;

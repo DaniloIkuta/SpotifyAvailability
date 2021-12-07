@@ -16,7 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.envers.AuditJoinTable;
 import org.hibernate.envers.Audited;
 
 import br.daniloikuta.spotifyavailability.enums.AlbumType;
@@ -57,11 +56,8 @@ public class AlbumEntity {
 	@Column
 	private ReleaseDatePrecision releaseDatePrecision;
 
-	// TODO: verify entity duplication
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "albumId")
-	@AuditJoinTable(name = "album_copyright_audit")
-	private Set<CopyrightEntity> copyrights;
+	@Column
+	private String copyrights;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "AlbumAvailability",

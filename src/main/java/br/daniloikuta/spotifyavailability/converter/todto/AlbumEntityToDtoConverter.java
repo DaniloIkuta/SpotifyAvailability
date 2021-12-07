@@ -10,7 +10,6 @@ import com.neovisionaries.i18n.CountryCode;
 import br.daniloikuta.spotifyavailability.dto.AlbumDto;
 import br.daniloikuta.spotifyavailability.dto.ArtistDto;
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
-import br.daniloikuta.spotifyavailability.entity.CopyrightEntity;
 import br.daniloikuta.spotifyavailability.entity.GenreEntity;
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 
@@ -41,15 +40,13 @@ public class AlbumEntityToDtoConverter {
 				.stream()
 				.map(MarketEntity::getCode)
 				.collect(Collectors.toSet());
-		final Set<String> copyrights = CollectionUtils.isEmpty(albumEntity.getCopyrights()) ? null
-			: albumEntity.getCopyrights().stream().map(CopyrightEntity::getText).collect(Collectors.toSet());
 		final Set<String> genres = CollectionUtils.isEmpty(albumEntity.getGenres()) ? null
 			: albumEntity.getGenres().stream().map(GenreEntity::getGenre).collect(Collectors.toSet());
 
 		return AlbumDto.builder()
 			.artists(artists)
 			.availableMarkets(markets)
-			.copyrights(copyrights)
+			.copyrights(albumEntity.getCopyrights())
 			.genres(genres)
 			.id(albumEntity.getId())
 			.name(albumEntity.getName())

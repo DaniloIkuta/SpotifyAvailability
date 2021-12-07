@@ -31,7 +31,6 @@ import br.daniloikuta.spotifyavailability.dto.AlbumDto;
 import br.daniloikuta.spotifyavailability.dto.ArtistDto;
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
 import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
-import br.daniloikuta.spotifyavailability.entity.CopyrightEntity;
 import br.daniloikuta.spotifyavailability.entity.GenreEntity;
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 import br.daniloikuta.spotifyavailability.entity.TrackEntity;
@@ -90,12 +89,11 @@ public class AlbumAvailabilityBusinessTest {
 
 		final ArtistDto artist = ArtistDto.builder().id("artistId").name("artistName").build();
 		final Set<CountryCode> markets = new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US));
-		final Set<String> copyrights = new HashSet<>(Arrays.asList("copyrightText"));
 		final Set<String> genres = new HashSet<>(Arrays.asList("genre1", "genre2"));
 		final AlbumDto album1 = AlbumDto.builder()
 			.artists(new HashSet<>(Arrays.asList(artist)))
 			.availableMarkets(markets)
-			.copyrights(copyrights)
+			.copyrights("copyrights")
 			.genres(genres)
 			.id("albumId1")
 			.name("album1")
@@ -108,7 +106,7 @@ public class AlbumAvailabilityBusinessTest {
 		final AlbumDto album2 = AlbumDto.builder()
 			.artists(new HashSet<>(Arrays.asList(artist)))
 			.availableMarkets(markets)
-			.copyrights(copyrights)
+			.copyrights("copyrights")
 			.genres(genres)
 			.id("albumId2")
 			.name("album2")
@@ -130,8 +128,6 @@ public class AlbumAvailabilityBusinessTest {
 				MarketEntity.builder().code(CountryCode.US).build()));
 		final Set<ArtistEntity> artists =
 			new HashSet<>(Arrays.asList(ArtistEntity.builder().id("artistId").name("artistName").build()));
-		final Set<CopyrightEntity> copyrights =
-			new HashSet<>(Arrays.asList(CopyrightEntity.builder().text("copyrightText").build()));
 		final Set<GenreEntity> genres = new HashSet<>(Arrays.asList(GenreEntity.builder().genre("genre1").build(),
 			GenreEntity.builder().genre("genre2").build()));
 
@@ -140,7 +136,7 @@ public class AlbumAvailabilityBusinessTest {
 			.name("album1")
 			.type(AlbumType.ALBUM)
 			.availableMarkets(marketEntities)
-			.copyrights(copyrights)
+			.copyrights("copyrights")
 			.trackCount(1)
 			.releaseDate("2021-01-01")
 			.releaseDatePrecision(ReleaseDatePrecision.DAY)
@@ -153,7 +149,7 @@ public class AlbumAvailabilityBusinessTest {
 			.name("album2")
 			.type(AlbumType.ALBUM)
 			.availableMarkets(marketEntities)
-			.copyrights(copyrights)
+			.copyrights("copyrights")
 			.trackCount(2)
 			.releaseDate("2021-01-02")
 			.releaseDatePrecision(ReleaseDatePrecision.DAY)

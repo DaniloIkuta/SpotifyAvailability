@@ -14,7 +14,9 @@ import org.hibernate.envers.Audited;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "Artist")
@@ -32,10 +34,14 @@ public class ArtistEntity {
 	@Column(nullable = false)
 	private String name;
 
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	@ManyToMany
 	@JoinTable(name = "ArtistAlbum")
 	private Set<AlbumEntity> albums;
 
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	@ManyToMany
 	@JoinTable(name = "ArtistTrack")
 	private Set<TrackEntity> tracks;

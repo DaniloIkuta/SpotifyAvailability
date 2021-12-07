@@ -16,7 +16,6 @@ import br.daniloikuta.spotifyavailability.dto.ArtistDto;
 import br.daniloikuta.spotifyavailability.dto.TrackDto;
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
 import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
-import br.daniloikuta.spotifyavailability.entity.CopyrightEntity;
 import br.daniloikuta.spotifyavailability.entity.GenreEntity;
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 import br.daniloikuta.spotifyavailability.entity.TrackEntity;
@@ -45,8 +44,7 @@ public class AlbumEntityToDtoConverterTest {
 				ArtistEntity.builder().name("artist2").build())))
 			.availableMarkets(new HashSet<>(Arrays.asList(MarketEntity.builder().code(CountryCode.BR).build(),
 				MarketEntity.builder().code(CountryCode.US).build())))
-			.copyrights(new HashSet<>(Arrays.asList(CopyrightEntity.builder().text("c1").build(),
-				CopyrightEntity.builder().text("c2").build())))
+			.copyrights("copyrights")
 			.genres(new HashSet<>(Arrays.asList(GenreEntity.builder().genre("genre1").build(),
 				GenreEntity.builder().genre("genre2").build())))
 			.id("albumId")
@@ -66,7 +64,7 @@ public class AlbumEntityToDtoConverterTest {
 			.artists(new HashSet<>(Arrays.asList(ArtistDto.builder().name("artist1").build(),
 				ArtistDto.builder().name("artist2").build())))
 			.availableMarkets(new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US)))
-			.copyrights(new HashSet<>(Arrays.asList("c1", "c2")))
+			.copyrights("copyrights")
 			.genres(new HashSet<>(Arrays.asList("genre1", "genre2")))
 			.id("albumId")
 			.name("albumName")
@@ -89,8 +87,7 @@ public class AlbumEntityToDtoConverterTest {
 				ArtistEntity.builder().name("artist2").build())))
 			.availableMarkets(new HashSet<>(Arrays.asList(MarketEntity.builder().code(CountryCode.BR).build(),
 				MarketEntity.builder().code(CountryCode.US).build())))
-			.copyrights(new HashSet<>(Arrays.asList(CopyrightEntity.builder().text("c1").build(),
-				CopyrightEntity.builder().text("c2").build())))
+			.copyrights("copyrights")
 			.genres(new HashSet<>(Arrays.asList(GenreEntity.builder().genre("genre1").build(),
 				GenreEntity.builder().genre("genre2").build())))
 			.id("albumId")
@@ -110,7 +107,7 @@ public class AlbumEntityToDtoConverterTest {
 			.artists(new HashSet<>(Arrays.asList(ArtistDto.builder().name("artist1").build(),
 				ArtistDto.builder().name("artist2").build())))
 			.availableMarkets(new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US)))
-			.copyrights(new HashSet<>(Arrays.asList("c1", "c2")))
+			.copyrights("copyrights")
 			.genres(new HashSet<>(Arrays.asList("genre1", "genre2")))
 			.id("albumId")
 			.name("albumName")

@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -43,6 +46,10 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 	@Mock
 	private ArtistRepository artistRepository;
 
+	@Mock
+	private Clock clock;
+	private final static LocalDate FIXED_DATE = LocalDate.of(2021, 12, 6);
+
 	@Test
 	void testGetArtistAlbumsAvailabilitiesNoneFound () {
 		when(spotifyService.getArtistAlbums("artistId")).thenReturn(new ArrayList<>());
@@ -51,7 +58,7 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 			artistAlbumsAvailabilityBusiness.getArtistAlbumsAvailabilities("artistId");
 
 		assertEquals(ArtistAlbumsAvailabilityResponseDto.builder().build(), artistAlbumsAvailabilities);
-		verifyNoInteractions(albumRepository, artistRepository);
+		verifyNoInteractions(albumRepository, artistRepository, clock);
 	}
 
 	@Test
@@ -72,6 +79,7 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 				.name("album1")
 				.restriction("restriction")
 				.type(AlbumType.ALBUM)
+				.lastUpdated(FIXED_DATE)
 				.build(),
 			AlbumDto.builder()
 				.artists(new HashSet<>(Arrays.asList(artistDto, otherArtistDto)))
@@ -80,6 +88,7 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 				.name("album2")
 				.restriction("restriction")
 				.type(AlbumType.ALBUM)
+				.lastUpdated(FIXED_DATE)
 				.build());
 		final ArtistAlbumsAvailabilityResponseDto expected = ArtistAlbumsAvailabilityResponseDto.builder()
 			.artist(artistDto)
@@ -102,6 +111,7 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 			.name("album1")
 			.restriction("restriction")
 			.type(AlbumType.ALBUM)
+			.lastUpdated(FIXED_DATE)
 			.build();
 
 		final ArtistEntity otherArtistEntity =
@@ -114,11 +124,17 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 			.name("album2")
 			.restriction("restriction")
 			.type(AlbumType.ALBUM)
+			.lastUpdated(FIXED_DATE)
 			.build();
 
 		final List<AlbumEntity> artistAlbumEntities = Arrays.asList(albumEntity1, albumEntity2);
 		when(spotifyService.getArtistAlbums("artistId")).thenReturn(artistAlbumEntities);
 		when(artistRepository.saveAll(allArtistEntities)).thenReturn(allArtistEntities);
 		when(albumRepository.saveAll(artistAlbumEntities)).thenReturn(artistAlbumEntities);
+
+		final Clock fixedClock = Clock.fixed(FIXED_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+			ZoneId.systemDefault());
+		when(clock.getZone()).thenReturn(fixedClock.getZone());
+		when(clock.instant()).thenReturn(fixedClock.instant());
 	}
 }

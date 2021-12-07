@@ -3,6 +3,7 @@ package br.daniloikuta.spotifyavailability.converter.todto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -58,6 +59,7 @@ public class AlbumEntityToDtoConverterTest {
 				TrackEntity.builder().name("track1").album(AlbumEntity.builder().name("").build()).build(),
 				TrackEntity.builder().name("track2").album(AlbumEntity.builder().name("").build()).build())))
 			.type(AlbumType.ALBUM)
+			.lastUpdated(LocalDate.of(2021, 12, 6))
 			.build());
 
 		final AlbumDto expected = AlbumDto.builder()
@@ -75,6 +77,7 @@ public class AlbumEntityToDtoConverterTest {
 			.tracks(new HashSet<>(
 				Arrays.asList(TrackDto.builder().name("track1").build(), TrackDto.builder().name("track2").build())))
 			.type(AlbumType.ALBUM)
+			.lastUpdated(LocalDate.of(2021, 12, 6))
 			.build();
 		assertEquals(expected, albumDto);
 	}
@@ -100,6 +103,7 @@ public class AlbumEntityToDtoConverterTest {
 				TrackEntity.builder().name("track1").build(),
 				TrackEntity.builder().name("track2").build())))
 			.type(AlbumType.ALBUM)
+			.lastUpdated(LocalDate.of(2021, 12, 6))
 			.build());
 
 		final AlbumDto expected = AlbumDto.builder()
@@ -115,6 +119,7 @@ public class AlbumEntityToDtoConverterTest {
 			.restriction("restriction")
 			.trackCount(2)
 			.type(AlbumType.ALBUM)
+			.lastUpdated(LocalDate.of(2021, 12, 6))
 			.build();
 		assertEquals(expected, albumDto);
 	}

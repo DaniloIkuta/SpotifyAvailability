@@ -39,4 +39,11 @@ public class AlbumAvailabilityController {
 
 		return ResponseEntity.ok(null);
 	}
+
+	@PostMapping("/refresh")
+	public ResponseEntity<Void> refreshAvailabilities () {
+		albumAvailabilityBusiness.refreshAvailabilities();
+
+		return ResponseEntity.ok(null);
+	}
 }

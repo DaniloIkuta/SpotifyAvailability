@@ -58,6 +58,7 @@ public class AlbumEntityToDtoConverter {
 			.restriction(albumEntity.getRestriction())
 			.trackCount(albumEntity.getTrackCount())
 			.type(albumEntity.getType())
+			.lastUpdated(albumEntity.getLastUpdated())
 			.build();
 	}
 }

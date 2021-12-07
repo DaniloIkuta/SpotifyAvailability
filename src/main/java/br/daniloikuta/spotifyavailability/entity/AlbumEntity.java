@@ -1,5 +1,6 @@
 package br.daniloikuta.spotifyavailability.entity;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -84,4 +85,7 @@ public class AlbumEntity {
 	@ToString.Exclude
 	@OneToMany(mappedBy = "album")
 	private Set<TrackEntity> tracks;
+
+	@Column(nullable = false)
+	private LocalDate lastUpdated;
 }

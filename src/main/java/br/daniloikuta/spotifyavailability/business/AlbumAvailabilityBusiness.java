@@ -1,10 +1,13 @@
 package br.daniloikuta.spotifyavailability.business;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import br.daniloikuta.spotifyavailability.converter.todto.AlbumEntityToDtoConverter;
@@ -33,6 +36,12 @@ public class AlbumAvailabilityBusiness {
 	@Autowired
 	private ArtistRepository artistRepository;
 
+	@Value("${spotify.availability-refresh-interval-days}")
+	private Integer refreshIntervalDays;
+
+	@Autowired
+	private Clock clock;
+
 	public AlbumAvailabilityResponseDto getAlbumAvailabilities (final List<String> ids) {
 		final List<AlbumEntity> albums = spotifyService.getAlbums(ids);
 		log.debug(albums.toString());
@@ -48,13 +57,16 @@ public class AlbumAvailabilityBusiness {
 
 		artistRepository.saveAll(artists);
 
-		albums.forEach(album -> album.setTracks(null));
+		final LocalDate now = LocalDate.now(clock);
+		albums.forEach(album -> {
+			album.setTracks(null);
+			album.setLastUpdated(now);
+		});
 		final List<AlbumEntity> savedAlbums = albumRepository.saveAll(albums);
 
 		trackRepository.saveAll(tracks);
 
 		// TODO: get alternatives?
-		// TODO: return tracks?
 
 		return AlbumAvailabilityResponseDto.builder()
 			.albums(savedAlbums.stream().map(AlbumEntityToDtoConverter::convert).toList())
@@ -70,6 +82,14 @@ public class AlbumAvailabilityBusiness {
 
 	public void fetchMissingTracks () {
 		final List<String> ids = albumRepository.findAlbumIdsWithoutTracks();
+
+		if (!ids.isEmpty()) {
+			getAlbumAvailabilities(ids);
+		}
+	}
+
+	public void refreshAvailabilities () {
+		final List<String> ids = albumRepository.findAlbumIdsToRefresh(refreshIntervalDays);
 
 		if (!ids.isEmpty()) {
 			getAlbumAvailabilities(ids);

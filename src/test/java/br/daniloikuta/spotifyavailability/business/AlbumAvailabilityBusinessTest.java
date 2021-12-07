@@ -7,6 +7,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.neovisionaries.i18n.CountryCode;
 
@@ -56,6 +60,10 @@ public class AlbumAvailabilityBusinessTest {
 	@Mock
 	private ArtistRepository artistRepository;
 
+	@Mock
+	private Clock clock;
+	private final static LocalDate FIXED_DATE = LocalDate.of(2021, 12, 6);
+
 	@Test
 	void testGetAlbumAvailabilitiesNoneFound () {
 		final List<String> albumIds = Arrays.asList("albumId1", "albumId2");
@@ -65,7 +73,7 @@ public class AlbumAvailabilityBusinessTest {
 			albumAvailabilityBusiness.getAlbumAvailabilities(albumIds);
 
 		assertEquals(AlbumAvailabilityResponseDto.builder().build(), albumAvailabilities);
-		verifyNoInteractions(albumRepository, trackRepository, artistRepository);
+		verifyNoInteractions(albumRepository, trackRepository, artistRepository, clock);
 	}
 
 	@Test
@@ -95,6 +103,7 @@ public class AlbumAvailabilityBusinessTest {
 			.releaseDatePrecision(ReleaseDatePrecision.DAY)
 			.trackCount(1)
 			.type(AlbumType.ALBUM)
+			.lastUpdated(FIXED_DATE)
 			.build();
 		final AlbumDto album2 = AlbumDto.builder()
 			.artists(new HashSet<>(Arrays.asList(artist)))
@@ -107,6 +116,7 @@ public class AlbumAvailabilityBusinessTest {
 			.releaseDatePrecision(ReleaseDatePrecision.DAY)
 			.trackCount(2)
 			.type(AlbumType.ALBUM)
+			.lastUpdated(FIXED_DATE)
 			.build();
 		final AlbumAvailabilityResponseDto expected =
 			AlbumAvailabilityResponseDto.builder().albums(Arrays.asList(album1, album2)).build();
@@ -135,7 +145,8 @@ public class AlbumAvailabilityBusinessTest {
 			.releaseDate("2021-01-01")
 			.releaseDatePrecision(ReleaseDatePrecision.DAY)
 			.genres(genres)
-			.artists(artists);
+			.artists(artists)
+			.lastUpdated(FIXED_DATE);
 
 		final AlbumEntity.AlbumEntityBuilder albumBuilder2 = AlbumEntity.builder()
 			.id("albumId2")
@@ -147,7 +158,8 @@ public class AlbumAvailabilityBusinessTest {
 			.releaseDate("2021-01-02")
 			.releaseDatePrecision(ReleaseDatePrecision.DAY)
 			.genres(genres)
-			.artists(artists);
+			.artists(artists)
+			.lastUpdated(FIXED_DATE);
 
 		final TrackEntity.TrackEntityBuilder album1Track1Builder =
 			TrackEntity.builder().id("trackId1").name("track1Album1").artists(artists);
@@ -166,6 +178,11 @@ public class AlbumAvailabilityBusinessTest {
 		when(spotifyService.getAlbums(albumIds)).thenReturn(albumEntities);
 		when(albumRepository.saveAll(albumWithoutTracks)).thenReturn(albumWithoutTracks);
 
+		final Clock fixedClock = Clock.fixed(FIXED_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+			ZoneId.systemDefault());
+		when(clock.getZone()).thenReturn(fixedClock.getZone());
+		when(clock.instant()).thenReturn(fixedClock.instant());
+
 		return new HashSet<>(Arrays.asList(album1Track1Builder.album(albumWithoutTracks.get(0)).build(),
 			album2Track1Builder.album(albumWithoutTracks.get(1)).build(),
 			album2Track2Builder.album(albumWithoutTracks.get(1)).build()));
@@ -178,6 +195,7 @@ public class AlbumAvailabilityBusinessTest {
 		albumAvailabilityBusiness.fetchMissingTracks();
 
 		verify(albumAvailabilityBusiness, never()).getAlbumAvailabilities(anyList());
+		verifyNoInteractions(trackRepository, artistRepository, clock);
 	}
 
 	@Test
@@ -188,5 +206,29 @@ public class AlbumAvailabilityBusinessTest {
 		albumAvailabilityBusiness.fetchMissingTracks();
 
 		verify(albumAvailabilityBusiness).getAlbumAvailabilities(ids);
+		verifyNoInteractions(trackRepository, artistRepository, clock);
+	}
+
+	@Test
+	void testRefreshAvailabilitiesNoneFound () {
+		ReflectionTestUtils.setField(albumAvailabilityBusiness, "refreshIntervalDays", 7);
+		when(albumRepository.findAlbumIdsToRefresh(7)).thenReturn(new ArrayList<>());
+
+		albumAvailabilityBusiness.refreshAvailabilities();
+
+		verify(albumAvailabilityBusiness, never()).getAlbumAvailabilities(anyList());
+		verifyNoInteractions(trackRepository, artistRepository, clock);
+	}
+
+	@Test
+	void testRefreshAvailabilities () {
+		ReflectionTestUtils.setField(albumAvailabilityBusiness, "refreshIntervalDays", 7);
+		final List<String> ids = Arrays.asList("albumId1", "albumId2");
+		when(albumRepository.findAlbumIdsToRefresh(7)).thenReturn(ids);
+
+		albumAvailabilityBusiness.refreshAvailabilities();
+
+		verify(albumAvailabilityBusiness).getAlbumAvailabilities(ids);
+		verifyNoInteractions(trackRepository, artistRepository, clock);
 	}
 }

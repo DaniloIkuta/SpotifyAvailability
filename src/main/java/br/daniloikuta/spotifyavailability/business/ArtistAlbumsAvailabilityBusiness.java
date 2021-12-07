@@ -1,5 +1,7 @@
 package br.daniloikuta.spotifyavailability.business;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +30,9 @@ public class ArtistAlbumsAvailabilityBusiness {
 	@Autowired
 	private ArtistRepository artistRepository;
 
+	@Autowired
+	private Clock clock;
+
 	public ArtistAlbumsAvailabilityResponseDto getArtistAlbumsAvailabilities (final String id) {
 		final List<AlbumEntity> artistAlbums = spotifyService.getArtistAlbums(id);
 		log.debug(artistAlbums.toString());
@@ -43,6 +48,8 @@ public class ArtistAlbumsAvailabilityBusiness {
 		final ArtistEntity searchedArtist =
 			savedArtists.stream().filter(artist -> artist.getId().equals(id)).findAny().orElse(null);
 
+		final LocalDate now = LocalDate.now(clock);
+		artistAlbums.forEach(album -> album.setLastUpdated(now));
 		final List<AlbumEntity> savedAlbums = albumRepository.saveAll(artistAlbums);
 
 		return ArtistAlbumsAvailabilityResponseDto.builder()

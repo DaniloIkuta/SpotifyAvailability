@@ -16,4 +16,7 @@ public interface AlbumRepository extends
 
 	@Query("SELECT a.id FROM AlbumEntity a LEFT JOIN TrackEntity t ON a.id = t.album.id WHERE t.album.id = NULL")
 	List<String> findAlbumIdsWithoutTracks ();
+
+	@Query("SELECT a.id FROM AlbumEntity a WHERE DATEDIFF(CURDATE(), a.lastUpdated) >= ?1")
+	List<String> findAlbumIdsToRefresh (Integer intervalDays);
 }

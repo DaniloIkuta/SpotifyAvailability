@@ -5,6 +5,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -49,6 +52,10 @@ public class TrackAvailabilityBusinessTest {
 	@Mock
 	private ArtistRepository artistRepository;
 
+	@Mock
+	private Clock clock;
+	private final static LocalDate FIXED_DATE = LocalDate.of(2021, 12, 6);
+
 	@Test
 	void testGetTrackAvailabilitiesNoneFound () {
 		final List<String> trackIds = Arrays.asList("trackId1", "trackId2");
@@ -58,7 +65,7 @@ public class TrackAvailabilityBusinessTest {
 			trackAvailabilityBusiness.getTrackAvailabilities(trackIds);
 
 		assertEquals(TrackAvailabilityResponseDto.builder().build(), trackAvailabilities);
-		verifyNoInteractions(albumRepository, trackRepository, artistRepository);
+		verifyNoInteractions(albumRepository, trackRepository, artistRepository, clock);
 	}
 
 	@Test
@@ -141,6 +148,11 @@ public class TrackAvailabilityBusinessTest {
 
 		when(spotifyService.getTracks(trackIds)).thenReturn(allTracks);
 		when(trackRepository.saveAll(allTracks)).thenReturn(allTracks);
+
+		final Clock fixedClock = Clock.fixed(FIXED_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+			ZoneId.systemDefault());
+		when(clock.getZone()).thenReturn(fixedClock.getZone());
+		when(clock.instant()).thenReturn(fixedClock.instant());
 	}
 
 	private AlbumEntity getAlbum2Entity () {
@@ -148,6 +160,7 @@ public class TrackAvailabilityBusinessTest {
 			.name("album2")
 			.id("albumId2")
 			.artists(new HashSet<>(Arrays.asList(getArtist2Entity())))
+			.lastUpdated(FIXED_DATE)
 			.build();
 	}
 
@@ -160,6 +173,7 @@ public class TrackAvailabilityBusinessTest {
 			.name("album1")
 			.id("albumId1")
 			.artists(new HashSet<>(Arrays.asList(getArtist1Entity())))
+			.lastUpdated(FIXED_DATE)
 			.build();
 	}
 
@@ -172,6 +186,7 @@ public class TrackAvailabilityBusinessTest {
 			.name("album2")
 			.id("albumId2")
 			.artists(new HashSet<>(Arrays.asList(getArtist2Dto())))
+			.lastUpdated(FIXED_DATE)
 			.build();
 	}
 
@@ -184,6 +199,7 @@ public class TrackAvailabilityBusinessTest {
 			.name("album1")
 			.id("albumId1")
 			.artists(new HashSet<>(Arrays.asList(getArtist1Dto())))
+			.lastUpdated(FIXED_DATE)
 			.build();
 	}
 

@@ -1,6 +1,6 @@
 ALTER TABLE album_availability DROP FOREIGN KEY fk_album_availability_market_id;
 ALTER TABLE album_availability DROP FOREIGN KEY fk_album_availability_album_id;
-ALTER TABLE album_genre DROP FOREIGN KEY fk_album_genre_genre_id;
+ALTER TABLE album_genre DROP FOREIGN KEY fk_album_genre_genre;
 ALTER TABLE album_genre DROP FOREIGN KEY fk_album_genre_album_id;
 ALTER TABLE artist_album DROP FOREIGN KEY fk_artist_album_albums_id;
 ALTER TABLE artist_album DROP FOREIGN KEY fk_artist_album_artists_id;

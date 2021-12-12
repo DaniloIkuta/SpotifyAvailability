@@ -18,8 +18,8 @@ CREATE TABLE album_availability (
 
 CREATE TABLE album_genre (
     album_id VARCHAR(64) NOT NULL,
-    genre_id BIGINT NOT NULL,
-    PRIMARY KEY (album_id , genre_id)
+    genre VARCHAR(100) NOT NULL,
+    PRIMARY KEY (album_id , genre)
 )  ENGINE=INNODB;
 
 CREATE TABLE artist (
@@ -40,8 +40,7 @@ CREATE TABLE artist_track (
 )  ENGINE=INNODB;
 
 CREATE TABLE genre (
-    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    genre VARCHAR(100) NOT NULL
+    genre VARCHAR(100) NOT NULL PRIMARY KEY
 )  ENGINE=INNODB;
 
 CREATE TABLE market (
@@ -67,7 +66,7 @@ CREATE TABLE track_availability (
 
 ALTER TABLE album_availability ADD CONSTRAINT fk_album_availability_market_code FOREIGN KEY (market_code) REFERENCES market (code);
 ALTER TABLE album_availability ADD CONSTRAINT fk_album_availability_album_id FOREIGN KEY (album_id) REFERENCES album (id);
-ALTER TABLE album_genre ADD CONSTRAINT fk_album_genre_genre_id FOREIGN KEY (genre_id) REFERENCES genre (id);
+ALTER TABLE album_genre ADD CONSTRAINT fk_album_genre_genre FOREIGN KEY (genre) REFERENCES genre (genre);
 ALTER TABLE album_genre ADD CONSTRAINT fk_album_genre_album_id FOREIGN KEY (album_id) REFERENCES album (id);
 ALTER TABLE artist_album ADD CONSTRAINT fk_artist_album_albums_id FOREIGN KEY (album_id) REFERENCES album (id);
 ALTER TABLE artist_album ADD CONSTRAINT fk_artist_album_artists_id FOREIGN KEY (artist_id) REFERENCES artist (id);
@@ -112,10 +111,10 @@ CREATE TABLE album_availability_audit (
 
 CREATE TABLE album_genre_audit (
     album_id VARCHAR(64) NOT NULL,
-    genre_id BIGINT NOT NULL,
+    genre VARCHAR(100) NOT NULL,
     revision_id BIGINT NOT NULL,
     revision_type TINYINT NOT NULL,
-    PRIMARY KEY (revision_id , album_id , genre_id),
+    PRIMARY KEY (revision_id , album_id , genre),
     CONSTRAINT fk_album_genre_revinfo_rev_id FOREIGN KEY (revision_id)
         REFERENCES revision_info (revision_id)
 )  ENGINE=INNODB;
@@ -151,11 +150,10 @@ CREATE TABLE artist_track_audit (
 )  ENGINE=INNODB;
 
 CREATE TABLE genre_audit (
-    id BIGINT NOT NULL,
-    genre VARCHAR(100),
+    genre VARCHAR(100) NOT NULL,
     revision_id BIGINT NOT NULL,
     revision_type TINYINT NOT NULL,
-    PRIMARY KEY (revision_id , id),
+    PRIMARY KEY (revision_id , genre),
     CONSTRAINT fk_genre_revinfo_rev_id FOREIGN KEY (revision_id)
         REFERENCES revision_info (revision_id)
 )  ENGINE=INNODB;

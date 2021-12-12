@@ -71,7 +71,7 @@ public class AlbumEntity {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "AlbumGenre",
 		joinColumns = @JoinColumn(name = "albumId"),
-		inverseJoinColumns = @JoinColumn(name = "genreId"))
+		inverseJoinColumns = @JoinColumn(name = "genre"))
 	private Set<GenreEntity> genres;
 
 	@ManyToMany(cascade = CascadeType.ALL)

@@ -8,7 +8,7 @@ import br.daniloikuta.spotifyavailability.entity.GenreEntity;
 
 @Repository
 public interface GenreRepository extends
-	JpaRepository<GenreEntity, Long>,
-	RevisionRepository<GenreEntity, Long, Integer> {
+	JpaRepository<GenreEntity, String>,
+	RevisionRepository<GenreEntity, String, Integer> {
 
 }

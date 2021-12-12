@@ -82,10 +82,10 @@ public class AlbumAvailabilityBusinessTest {
 		verify(trackRepository).saveAll(allTracksWithAlbum);
 
 		final ArtistDto artist = ArtistDto.builder().id("artistId").name("artistName").build();
-		final Set<CountryCode> markets = new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US));
-		final Set<String> genres = new HashSet<>(Arrays.asList("genre1", "genre2"));
+		final List<CountryCode> markets = Arrays.asList(CountryCode.BR, CountryCode.US);
+		final List<String> genres = Arrays.asList("genre1", "genre2");
 		final AlbumDto album1 = AlbumDto.builder()
-			.artists(new HashSet<>(Arrays.asList(artist)))
+			.artists(Arrays.asList(artist))
 			.availableMarkets(markets)
 			.copyrights("copyrights")
 			.genres(genres)
@@ -98,7 +98,7 @@ public class AlbumAvailabilityBusinessTest {
 			.lastUpdated(FIXED_DATE)
 			.build();
 		final AlbumDto album2 = AlbumDto.builder()
-			.artists(new HashSet<>(Arrays.asList(artist)))
+			.artists(Arrays.asList(artist))
 			.availableMarkets(markets)
 			.copyrights("copyrights")
 			.genres(genres)

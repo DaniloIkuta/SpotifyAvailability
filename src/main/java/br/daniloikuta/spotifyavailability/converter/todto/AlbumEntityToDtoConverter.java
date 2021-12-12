@@ -1,7 +1,7 @@
 package br.daniloikuta.spotifyavailability.converter.todto;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
@@ -9,6 +9,7 @@ import com.neovisionaries.i18n.CountryCode;
 
 import br.daniloikuta.spotifyavailability.dto.AlbumDto;
 import br.daniloikuta.spotifyavailability.dto.ArtistDto;
+import br.daniloikuta.spotifyavailability.dto.TrackDto;
 import br.daniloikuta.spotifyavailability.entity.AlbumEntity;
 import br.daniloikuta.spotifyavailability.entity.GenreEntity;
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
@@ -22,7 +23,8 @@ public class AlbumEntityToDtoConverter {
 				albumEntity.getTracks()
 					.stream()
 					.map(TrackEntityToDtoConverter::convertWithoutAlbum)
-					.collect(Collectors.toSet()));
+					.sorted(Comparator.comparing(TrackDto::getDiscNumber).thenComparing(TrackDto::getTrackNumber))
+					.toList());
 		}
 
 		return albumDto;
@@ -33,15 +35,24 @@ public class AlbumEntityToDtoConverter {
 			return null;
 		}
 
-		final Set<ArtistDto> artists = CollectionUtils.isEmpty(albumEntity.getArtists()) ? null
-			: albumEntity.getArtists().stream().map(ArtistEntityToDtoConverter::convert).collect(Collectors.toSet());
-		final Set<CountryCode> markets = CollectionUtils.isEmpty(albumEntity.getAvailableMarkets()) ? null
+		final List<ArtistDto> artists = CollectionUtils.isEmpty(albumEntity.getArtists()) ? null
+			: albumEntity.getArtists()
+				.stream()
+				.map(ArtistEntityToDtoConverter::convert)
+				.sorted(Comparator.comparing(ArtistDto::getName))
+				.toList();
+		final List<CountryCode> markets = CollectionUtils.isEmpty(albumEntity.getAvailableMarkets()) ? null
 			: albumEntity.getAvailableMarkets()
 				.stream()
 				.map(MarketEntity::getCode)
-				.collect(Collectors.toSet());
-		final Set<String> genres = CollectionUtils.isEmpty(albumEntity.getGenres()) ? null
-			: albumEntity.getGenres().stream().map(GenreEntity::getGenre).collect(Collectors.toSet());
+				.sorted(Comparator.comparing(CountryCode::getAlpha2))
+				.toList();
+		final List<String> genres = CollectionUtils.isEmpty(albumEntity.getGenres()) ? null
+			: albumEntity.getGenres()
+				.stream()
+				.map(GenreEntity::getGenre)
+				.sorted()
+				.toList();
 
 		return AlbumDto.builder()
 			.artists(artists)

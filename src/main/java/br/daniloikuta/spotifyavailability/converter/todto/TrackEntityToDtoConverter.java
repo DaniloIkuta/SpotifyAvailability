@@ -1,7 +1,7 @@
 package br.daniloikuta.spotifyavailability.converter.todto;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
@@ -28,10 +28,18 @@ public class TrackEntityToDtoConverter {
 			return null;
 		}
 
-		final Set<ArtistDto> artists = CollectionUtils.isEmpty(trackEntity.getArtists()) ? null
-			: trackEntity.getArtists().stream().map(ArtistEntityToDtoConverter::convert).collect(Collectors.toSet());
-		final Set<CountryCode> markets = CollectionUtils.isEmpty(trackEntity.getAvailableMarkets()) ? null
-			: trackEntity.getAvailableMarkets().stream().map(MarketEntity::getCode).collect(Collectors.toSet());
+		final List<ArtistDto> artists = CollectionUtils.isEmpty(trackEntity.getArtists()) ? null
+			: trackEntity.getArtists()
+				.stream()
+				.map(ArtistEntityToDtoConverter::convert)
+				.sorted(Comparator.comparing(ArtistDto::getName))
+				.toList();
+		final List<CountryCode> markets = CollectionUtils.isEmpty(trackEntity.getAvailableMarkets()) ? null
+			: trackEntity.getAvailableMarkets()
+				.stream()
+				.map(MarketEntity::getCode)
+				.sorted(Comparator.comparing(CountryCode::getAlpha2))
+				.toList();
 
 		return TrackDto.builder()
 			.artists(artists)

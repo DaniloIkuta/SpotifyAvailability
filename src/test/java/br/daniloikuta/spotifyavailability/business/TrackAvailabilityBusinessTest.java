@@ -75,9 +75,9 @@ public class TrackAvailabilityBusinessTest {
 		verify(albumRepository).saveAll(Arrays.asList(getAlbum1Entity(), getAlbum2Entity()));
 
 		final ArtistDto artist1Dto = getArtist1Dto();
-		final Set<CountryCode> markets = new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US));
+		final List<CountryCode> markets = Arrays.asList(CountryCode.BR, CountryCode.US);
 		final TrackDto track1Dto = TrackDto.builder()
-			.artists(new HashSet<>(Arrays.asList(artist1Dto)))
+			.artists(Arrays.asList(artist1Dto))
 			.album(getAlbum1Dto())
 			.availableMarkets(markets)
 			.discNumber(1)
@@ -89,7 +89,7 @@ public class TrackAvailabilityBusinessTest {
 			.trackNumber(2)
 			.build();
 		final TrackDto track2Dto = TrackDto.builder()
-			.artists(new HashSet<>(Arrays.asList(artist1Dto, getArtist2Dto())))
+			.artists(Arrays.asList(artist1Dto, getArtist2Dto()))
 			.album(getAlbum2Dto())
 			.availableMarkets(markets)
 			.discNumber(1)
@@ -180,7 +180,7 @@ public class TrackAvailabilityBusinessTest {
 		return AlbumDto.builder()
 			.name("album2")
 			.id("albumId2")
-			.artists(new HashSet<>(Arrays.asList(getArtist2Dto())))
+			.artists(Arrays.asList(getArtist2Dto()))
 			.lastUpdated(FIXED_DATE)
 			.build();
 	}
@@ -193,7 +193,7 @@ public class TrackAvailabilityBusinessTest {
 		return AlbumDto.builder()
 			.name("album1")
 			.id("albumId1")
-			.artists(new HashSet<>(Arrays.asList(getArtist1Dto())))
+			.artists(Arrays.asList(getArtist1Dto()))
 			.lastUpdated(FIXED_DATE)
 			.build();
 	}

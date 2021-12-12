@@ -68,9 +68,9 @@ public class TrackBusinessTest {
 		final List<TrackDto> tracks = trackBusiness.findTracks(ids);
 
 		final ArtistDto artist1Dto = getArtist1Dto();
-		final Set<CountryCode> markets = new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US));
+		final List<CountryCode> markets = Arrays.asList(CountryCode.BR, CountryCode.US);
 		final TrackDto track1Dto = TrackDto.builder()
-			.artists(new HashSet<>(Arrays.asList(artist1Dto)))
+			.artists(Arrays.asList(artist1Dto))
 			.album(getAlbum1Dto())
 			.availableMarkets(markets)
 			.discNumber(1)
@@ -82,7 +82,7 @@ public class TrackBusinessTest {
 			.trackNumber(2)
 			.build();
 		final TrackDto track2Dto = TrackDto.builder()
-			.artists(new HashSet<>(Arrays.asList(artist1Dto, getArtist2Dto())))
+			.artists(Arrays.asList(artist1Dto, getArtist2Dto()))
 			.album(getAlbum2Dto())
 			.availableMarkets(markets)
 			.discNumber(1)
@@ -162,7 +162,7 @@ public class TrackBusinessTest {
 		return AlbumDto.builder()
 			.name("album2")
 			.id("albumId2")
-			.artists(new HashSet<>(Arrays.asList(getArtist2Dto())))
+			.artists(Arrays.asList(getArtist2Dto()))
 			.build();
 	}
 
@@ -174,7 +174,7 @@ public class TrackBusinessTest {
 		return AlbumDto.builder()
 			.name("album1")
 			.id("albumId1")
-			.artists(new HashSet<>(Arrays.asList(getArtist1Dto())))
+			.artists(Arrays.asList(getArtist1Dto()))
 			.build();
 	}
 

@@ -1,7 +1,7 @@
 package br.daniloikuta.spotifyavailability.dto;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -29,10 +29,10 @@ public class AlbumDto {
 	private String releaseDate;
 	private ReleaseDatePrecision releaseDatePrecision;
 	private String copyrights;
-	private Set<CountryCode> availableMarkets;
+	private List<CountryCode> availableMarkets;
 	private String restriction;
-	private Set<String> genres;
-	private Set<ArtistDto> artists;
-	private Set<TrackDto> tracks;
+	private List<String> genres;
+	private List<ArtistDto> artists;
+	private List<TrackDto> tracks;
 	private LocalDate lastUpdated;
 }

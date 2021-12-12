@@ -66,10 +66,10 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 
 		final ArtistDto artistDto = ArtistDto.builder().id("artistId").name("artistName").build();
 		final ArtistDto otherArtistDto = ArtistDto.builder().id("otherArtistId").name("otherArtistName").build();
-		final Set<CountryCode> countryCodes = new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US));
+		final List<CountryCode> countryCodes = Arrays.asList(CountryCode.BR, CountryCode.US);
 		final List<AlbumDto> albumDtos = Arrays.asList(
 			AlbumDto.builder()
-				.artists(new HashSet<>(Arrays.asList(artistDto)))
+				.artists(Arrays.asList(artistDto))
 				.availableMarkets(countryCodes)
 				.id("albumId1")
 				.name("album1")
@@ -78,7 +78,7 @@ public class ArtistAlbumsAvailabilityBusinessTest {
 				.lastUpdated(FIXED_DATE)
 				.build(),
 			AlbumDto.builder()
-				.artists(new HashSet<>(Arrays.asList(artistDto, otherArtistDto)))
+				.artists(Arrays.asList(artistDto, otherArtistDto))
 				.availableMarkets(countryCodes)
 				.id("albumId2")
 				.name("album2")

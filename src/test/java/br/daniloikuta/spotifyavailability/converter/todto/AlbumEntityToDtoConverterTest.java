@@ -40,13 +40,13 @@ public class AlbumEntityToDtoConverterTest {
 	@Test
 	void testConvert () {
 		final AlbumDto albumDto = AlbumEntityToDtoConverter.convert(AlbumEntity.builder()
-			.artists(new HashSet<>(Arrays.asList(ArtistEntity.builder().name("artist1").build(),
-				ArtistEntity.builder().name("artist2").build())))
-			.availableMarkets(new HashSet<>(Arrays.asList(MarketEntity.builder().code(CountryCode.BR).build(),
-				MarketEntity.builder().code(CountryCode.US).build())))
+			.artists(new HashSet<>(Arrays.asList(ArtistEntity.builder().name("artist2").build(),
+				ArtistEntity.builder().name("artist1").build())))
+			.availableMarkets(new HashSet<>(Arrays.asList(MarketEntity.builder().code(CountryCode.US).build(),
+				MarketEntity.builder().code(CountryCode.BR).build())))
 			.copyrights("copyrights")
-			.genres(new HashSet<>(Arrays.asList(GenreEntity.builder().genre("genre1").build(),
-				GenreEntity.builder().genre("genre2").build())))
+			.genres(new HashSet<>(Arrays.asList(GenreEntity.builder().genre("genre2").build(),
+				GenreEntity.builder().genre("genre1").build())))
 			.id("albumId")
 			.name("albumName")
 			.releaseDate("2021-01-01")
@@ -54,26 +54,44 @@ public class AlbumEntityToDtoConverterTest {
 			.restriction("restriction")
 			.trackCount(2)
 			.tracks(new HashSet<>(Arrays.asList(
-				TrackEntity.builder().name("track1").album(AlbumEntity.builder().name("").build()).build(),
-				TrackEntity.builder().name("track2").album(AlbumEntity.builder().name("").build()).build())))
+				TrackEntity.builder()
+					.name("track2")
+					.discNumber(1)
+					.trackNumber(2)
+					.album(AlbumEntity.builder().name("").build())
+					.build(),
+				TrackEntity.builder()
+					.name("track3")
+					.discNumber(2)
+					.trackNumber(1)
+					.album(AlbumEntity.builder().name("").build())
+					.build(),
+				TrackEntity.builder()
+					.name("track1")
+					.discNumber(1)
+					.trackNumber(1)
+					.album(AlbumEntity.builder().name("").build())
+					.build())))
 			.type(AlbumType.ALBUM)
 			.lastUpdated(LocalDate.of(2021, 12, 6))
 			.build());
 
 		final AlbumDto expected = AlbumDto.builder()
-			.artists(new HashSet<>(Arrays.asList(ArtistDto.builder().name("artist1").build(),
-				ArtistDto.builder().name("artist2").build())))
-			.availableMarkets(new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US)))
+			.artists(Arrays.asList(ArtistDto.builder().name("artist1").build(),
+				ArtistDto.builder().name("artist2").build()))
+			.availableMarkets(Arrays.asList(CountryCode.BR, CountryCode.US))
 			.copyrights("copyrights")
-			.genres(new HashSet<>(Arrays.asList("genre1", "genre2")))
+			.genres(Arrays.asList("genre1", "genre2"))
 			.id("albumId")
 			.name("albumName")
 			.releaseDate("2021-01-01")
 			.releaseDatePrecision(ReleaseDatePrecision.DAY)
 			.restriction("restriction")
 			.trackCount(2)
-			.tracks(new HashSet<>(
-				Arrays.asList(TrackDto.builder().name("track1").build(), TrackDto.builder().name("track2").build())))
+			.tracks(
+				Arrays.asList(TrackDto.builder().name("track1").discNumber(1).trackNumber(1).build(),
+					TrackDto.builder().name("track2").discNumber(1).trackNumber(2).build(),
+					TrackDto.builder().name("track3").discNumber(2).trackNumber(1).build()))
 			.type(AlbumType.ALBUM)
 			.lastUpdated(LocalDate.of(2021, 12, 6))
 			.build();
@@ -104,11 +122,11 @@ public class AlbumEntityToDtoConverterTest {
 			.build());
 
 		final AlbumDto expected = AlbumDto.builder()
-			.artists(new HashSet<>(Arrays.asList(ArtistDto.builder().name("artist1").build(),
-				ArtistDto.builder().name("artist2").build())))
-			.availableMarkets(new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US)))
+			.artists(Arrays.asList(ArtistDto.builder().name("artist1").build(),
+				ArtistDto.builder().name("artist2").build()))
+			.availableMarkets(Arrays.asList(CountryCode.BR, CountryCode.US))
 			.copyrights("copyrights")
-			.genres(new HashSet<>(Arrays.asList("genre1", "genre2")))
+			.genres(Arrays.asList("genre1", "genre2"))
 			.id("albumId")
 			.name("albumName")
 			.releaseDate("2021-01-01")

@@ -42,10 +42,10 @@ public class TrackEntityToDtoConverterTest {
 					TrackEntity.builder().name("").build(),
 					TrackEntity.builder().name("").build())))
 				.build())
-			.artists(new HashSet<>(Arrays.asList(ArtistEntity.builder().name("artist1").build(),
-				ArtistEntity.builder().name("artist2").build())))
-			.availableMarkets(new HashSet<>(Arrays.asList(MarketEntity.builder().code(CountryCode.BR).build(),
-				MarketEntity.builder().code(CountryCode.US).build())))
+			.artists(new HashSet<>(Arrays.asList(ArtistEntity.builder().name("artist2").build(),
+				ArtistEntity.builder().name("artist1").build())))
+			.availableMarkets(new HashSet<>(Arrays.asList(MarketEntity.builder().code(CountryCode.US).build(),
+				MarketEntity.builder().code(CountryCode.BR).build())))
 			.discNumber(1)
 			.duration(1000)
 			.explicit(false)
@@ -57,9 +57,9 @@ public class TrackEntityToDtoConverterTest {
 
 		final TrackDto expected = TrackDto.builder()
 			.album(AlbumDto.builder().name("albumName").build())
-			.artists(new HashSet<>(Arrays.asList(ArtistDto.builder().name("artist1").build(),
-				ArtistDto.builder().name("artist2").build())))
-			.availableMarkets(new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US)))
+			.artists(Arrays.asList(ArtistDto.builder().name("artist1").build(),
+				ArtistDto.builder().name("artist2").build()))
+			.availableMarkets(Arrays.asList(CountryCode.BR, CountryCode.US))
 			.discNumber(1)
 			.duration(1000)
 			.explicit(false)
@@ -89,9 +89,9 @@ public class TrackEntityToDtoConverterTest {
 			.build());
 
 		final TrackDto expected = TrackDto.builder()
-			.artists(new HashSet<>(Arrays.asList(ArtistDto.builder().name("artist1").build(),
-				ArtistDto.builder().name("artist2").build())))
-			.availableMarkets(new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US)))
+			.artists(Arrays.asList(ArtistDto.builder().name("artist1").build(),
+				ArtistDto.builder().name("artist2").build()))
+			.availableMarkets(Arrays.asList(CountryCode.BR, CountryCode.US))
 			.discNumber(1)
 			.duration(1000)
 			.explicit(false)

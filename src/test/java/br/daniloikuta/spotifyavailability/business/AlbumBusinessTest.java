@@ -70,10 +70,10 @@ public class AlbumBusinessTest {
 
 		final List<AlbumDto> albums = albumBusiness.findAlbums(ids);
 
-		final Set<ArtistDto> artists =
-			new HashSet<>(Arrays.asList(ArtistDto.builder().id("artistId").name("artistName").build()));
-		final Set<CountryCode> markets = new HashSet<>(Arrays.asList(CountryCode.BR, CountryCode.US));
-		final Set<String> genres = new HashSet<>(Arrays.asList("genre1", "genre2"));
+		final List<ArtistDto> artists =
+			Arrays.asList(ArtistDto.builder().id("artistId").name("artistName").build());
+		final List<CountryCode> markets = Arrays.asList(CountryCode.BR, CountryCode.US);
+		final List<String> genres = Arrays.asList("genre1", "genre2");
 		final AlbumDto album1 = AlbumDto.builder()
 			.artists(artists)
 			.availableMarkets(markets)
@@ -85,8 +85,14 @@ public class AlbumBusinessTest {
 			.releaseDatePrecision(ReleaseDatePrecision.DAY)
 			.trackCount(1)
 			.type(AlbumType.ALBUM)
-			.tracks(new HashSet<>(
-				Arrays.asList(TrackDto.builder().id("trackId1").name("track1Album1").artists(artists).build())))
+			.tracks(
+				Arrays.asList(TrackDto.builder()
+					.id("trackId1")
+					.name("track1Album1")
+					.discNumber(1)
+					.trackNumber(1)
+					.artists(artists)
+					.build()))
 			.build();
 		final AlbumDto album2 = AlbumDto.builder()
 			.artists(artists)
@@ -99,9 +105,21 @@ public class AlbumBusinessTest {
 			.releaseDatePrecision(ReleaseDatePrecision.DAY)
 			.trackCount(2)
 			.type(AlbumType.ALBUM)
-			.tracks(new HashSet<>(
-				Arrays.asList(TrackDto.builder().id("trackId2").name("track1Album2").artists(artists).build(),
-					TrackDto.builder().id("trackId3").name("track2Album2").artists(artists).build())))
+			.tracks(
+				Arrays.asList(TrackDto.builder()
+					.id("trackId2")
+					.name("track1Album2")
+					.discNumber(1)
+					.trackNumber(1)
+					.artists(artists)
+					.build(),
+					TrackDto.builder()
+						.id("trackId3")
+						.name("track2Album2")
+						.discNumber(1)
+						.trackNumber(2)
+						.artists(artists)
+						.build()))
 			.build();
 		final List<AlbumDto> expected = Arrays.asList(album1, album2);
 		assertEquals(expected, albums);
@@ -117,11 +135,29 @@ public class AlbumBusinessTest {
 			GenreEntity.builder().genre("genre2").build()));
 
 		final TrackEntity album1Track1 =
-			TrackEntity.builder().id("trackId1").name("track1Album1").artists(artists).build();
+			TrackEntity.builder()
+				.id("trackId1")
+				.name("track1Album1")
+				.discNumber(1)
+				.trackNumber(1)
+				.artists(artists)
+				.build();
 		final TrackEntity album2Track1 =
-			TrackEntity.builder().id("trackId2").name("track1Album2").artists(artists).build();
+			TrackEntity.builder()
+				.id("trackId2")
+				.name("track1Album2")
+				.discNumber(1)
+				.trackNumber(1)
+				.artists(artists)
+				.build();
 		final TrackEntity album2Track2 =
-			TrackEntity.builder().id("trackId3").name("track2Album2").artists(artists).build();
+			TrackEntity.builder()
+				.id("trackId3")
+				.name("track2Album2")
+				.discNumber(1)
+				.trackNumber(2)
+				.artists(artists)
+				.build();
 
 		final AlbumEntity album1 = AlbumEntity.builder()
 			.id("albumId1")

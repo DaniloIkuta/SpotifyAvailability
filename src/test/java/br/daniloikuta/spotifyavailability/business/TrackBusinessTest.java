@@ -41,7 +41,7 @@ import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 import br.daniloikuta.spotifyavailability.repository.TrackRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class TrackBusinessTest {
+class TrackBusinessTest {
 	@InjectMocks
 	private TrackBusiness trackBusiness;
 

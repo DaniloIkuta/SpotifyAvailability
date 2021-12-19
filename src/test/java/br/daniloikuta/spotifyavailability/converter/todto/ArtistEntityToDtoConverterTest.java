@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import br.daniloikuta.spotifyavailability.dto.ArtistDto;
 import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
 
-public class ArtistEntityToDtoConverterTest {
+class ArtistEntityToDtoConverterTest {
 
 	@Test
 	void testConvertNull () {

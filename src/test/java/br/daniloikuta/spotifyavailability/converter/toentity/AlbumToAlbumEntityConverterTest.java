@@ -25,7 +25,7 @@ import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.Paging.Builder;
 import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 
-public class AlbumToAlbumEntityConverterTest {
+class AlbumToAlbumEntityConverterTest {
 	@Test
 	void testConvertNull () {
 		final AlbumEntity albumEntity = AlbumToAlbumEntityConverter.convert(null);

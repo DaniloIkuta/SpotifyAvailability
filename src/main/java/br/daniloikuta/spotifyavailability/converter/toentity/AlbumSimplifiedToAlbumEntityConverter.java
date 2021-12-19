@@ -11,6 +11,10 @@ import br.daniloikuta.spotifyavailability.enums.AlbumType;
 import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
 
 public class AlbumSimplifiedToAlbumEntityConverter {
+	private AlbumSimplifiedToAlbumEntityConverter () {
+		throw new IllegalStateException();
+	}
+
 	public static AlbumEntity convert (final AlbumSimplified albumSimplified) {
 		if (albumSimplified == null) {
 			return null;

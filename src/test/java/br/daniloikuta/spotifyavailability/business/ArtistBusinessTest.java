@@ -32,7 +32,7 @@ import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
 import br.daniloikuta.spotifyavailability.repository.ArtistRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class ArtistBusinessTest {
+class ArtistBusinessTest {
 	@InjectMocks
 	private ArtistBusiness artistBusiness;
 

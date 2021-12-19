@@ -18,7 +18,7 @@ import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 
-public class TrackEntityToDtoConverterTest {
+class TrackEntityToDtoConverterTest {
 	@Test
 	void testConvertNull () {
 		final TrackDto trackDto = TrackEntityToDtoConverter.convert(null);

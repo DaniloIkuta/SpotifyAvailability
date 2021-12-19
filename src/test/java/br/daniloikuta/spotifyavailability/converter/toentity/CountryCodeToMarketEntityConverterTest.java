@@ -9,7 +9,7 @@ import com.neovisionaries.i18n.CountryCode;
 
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 
-public class CountryCodeToMarketEntityConverterTest {
+class CountryCodeToMarketEntityConverterTest {
 
 	@Test
 	void testConvertNull () {

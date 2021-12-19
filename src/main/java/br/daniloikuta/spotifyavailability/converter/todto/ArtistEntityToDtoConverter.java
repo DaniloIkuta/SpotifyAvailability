@@ -4,6 +4,10 @@ import br.daniloikuta.spotifyavailability.dto.ArtistDto;
 import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
 
 public class ArtistEntityToDtoConverter {
+	private ArtistEntityToDtoConverter () {
+		throw new IllegalStateException();
+	}
+
 	public static ArtistDto convert (final ArtistEntity artistEntit) {
 		if (artistEntit == null) {
 			return null;

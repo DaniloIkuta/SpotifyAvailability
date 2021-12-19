@@ -41,7 +41,7 @@ import br.daniloikuta.spotifyavailability.repository.TrackRepository;
 import br.daniloikuta.spotifyavailability.service.SpotifyService;
 
 @ExtendWith(MockitoExtension.class)
-public class AlbumAvailabilityBusinessTest {
+class AlbumAvailabilityBusinessTest {
 	@InjectMocks
 	@Spy
 	private AlbumAvailabilityBusiness albumAvailabilityBusiness;

@@ -19,7 +19,7 @@ import se.michaelthelin.spotify.model_objects.miscellaneous.Restrictions;
 import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 
-public class AlbumSimplifiedToAlbumEntityConverterTest {
+class AlbumSimplifiedToAlbumEntityConverterTest {
 
 	@Test
 	void testConvertNull () {

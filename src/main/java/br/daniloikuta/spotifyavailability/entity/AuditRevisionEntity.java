@@ -10,6 +10,7 @@ import org.hibernate.envers.RevisionEntity;
 
 import br.daniloikuta.spotifyavailability.configuration.AuditRevisionListener;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ import lombok.Setter;
 @AttributeOverride(name = "id", column = @Column(name = "revision_id"))
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class AuditRevisionEntity extends DefaultRevisionEntity {
 	private static final long serialVersionUID = -7470031086837182814L;
 

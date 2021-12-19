@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import br.daniloikuta.spotifyavailability.entity.ArtistEntity;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 
-public class ArtistSimplifiedToArtistEntityConverterTest {
+class ArtistSimplifiedToArtistEntityConverterTest {
 	@Test
 	void testConvertNull () {
 		final ArtistEntity artistEntity = ArtistSimplifiedToArtistEntityConverter.convert(null);

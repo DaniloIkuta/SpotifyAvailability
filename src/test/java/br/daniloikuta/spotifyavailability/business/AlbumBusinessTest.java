@@ -44,7 +44,7 @@ import br.daniloikuta.spotifyavailability.enums.ReleaseDatePrecision;
 import br.daniloikuta.spotifyavailability.repository.AlbumRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class AlbumBusinessTest {
+class AlbumBusinessTest {
 	@InjectMocks
 	private AlbumBusiness albumBusiness;
 

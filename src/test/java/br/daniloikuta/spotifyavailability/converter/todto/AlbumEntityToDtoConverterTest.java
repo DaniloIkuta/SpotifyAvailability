@@ -22,7 +22,7 @@ import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 import br.daniloikuta.spotifyavailability.enums.AlbumType;
 import br.daniloikuta.spotifyavailability.enums.ReleaseDatePrecision;
 
-public class AlbumEntityToDtoConverterTest {
+class AlbumEntityToDtoConverterTest {
 	@Test
 	void testConvertNull () {
 		final AlbumDto albumDto = AlbumEntityToDtoConverter.convert(null);

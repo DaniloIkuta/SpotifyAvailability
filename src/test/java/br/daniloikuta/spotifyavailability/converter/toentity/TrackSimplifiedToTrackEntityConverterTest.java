@@ -17,7 +17,7 @@ import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 
-public class TrackSimplifiedToTrackEntityConverterTest {
+class TrackSimplifiedToTrackEntityConverterTest {
 
 	@Test
 	void testConvertNull () {

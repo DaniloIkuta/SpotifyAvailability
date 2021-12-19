@@ -10,6 +10,10 @@ import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 
 public class TrackSimplifiedToTrackEntityConverter {
+	private TrackSimplifiedToTrackEntityConverter () {
+		throw new IllegalStateException();
+	}
+
 	public static TrackEntity convert (final TrackSimplified trackSimplified) {
 		if (trackSimplified == null) {
 			return null;

@@ -20,7 +20,7 @@ import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
-public class TrackToTrackEntityConverterTest {
+class TrackToTrackEntityConverterTest {
 	@Test
 	void testConvertNull () {
 		final TrackEntity trackEntity = TrackToTrackEntityConverter.convert(null);

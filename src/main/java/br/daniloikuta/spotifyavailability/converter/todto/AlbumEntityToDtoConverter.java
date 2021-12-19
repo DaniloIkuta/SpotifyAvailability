@@ -15,6 +15,10 @@ import br.daniloikuta.spotifyavailability.entity.GenreEntity;
 import br.daniloikuta.spotifyavailability.entity.MarketEntity;
 
 public class AlbumEntityToDtoConverter {
+	private AlbumEntityToDtoConverter () {
+		throw new IllegalStateException();
+	}
+
 	public static AlbumDto convert (final AlbumEntity albumEntity) {
 		final AlbumDto albumDto = convertWithoutTracks(albumEntity);
 

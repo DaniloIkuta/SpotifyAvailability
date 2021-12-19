@@ -17,6 +17,10 @@ import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 
 public class AlbumToAlbumEntityConverter {
+	private AlbumToAlbumEntityConverter () {
+		throw new IllegalStateException();
+	}
+
 	public static AlbumEntity convert (final Album album) {
 		if (album == null) {
 			return null;

@@ -11,6 +11,10 @@ import br.daniloikuta.spotifyavailability.entity.TrackEntity;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 public class TrackToTrackEntityConverter {
+	private TrackToTrackEntityConverter () {
+		throw new IllegalStateException();
+	}
+
 	public static TrackEntity convert (final Track track) {
 		if (track == null) {
 			return null;
